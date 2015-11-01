@@ -32,7 +32,7 @@ loc_param={
 locs_param=[{
 	'location':'18.9750,72.8258',
 	'radius':'10000',
-	'city':'Mumbai'
+	'city':'Bombay'
 	},
 	{
 	'location':'40.7127,-74.0059',
@@ -81,7 +81,7 @@ def getAndSaveplaces (loc_param):
 
 
 getAndSaveplaces(locs_param[0])
-getAndSaveplaces(locs_param[1])
+# getAndSaveplaces(locs_param[1])
 
 
 

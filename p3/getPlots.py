@@ -61,10 +61,10 @@ def analyse(cname):
 	f2_half=f2.items()[0:getTopQuantileIdx(f2,0.5)]
 	p_words_fd=([w for w in f2_half if (w[0] in ws.keys()) and ws[w[0]]['priorpolarity']=='positive'])
 	n_words_fd=([w for w in f2_half if (w[0] in ws.keys()) and ws[w[0]]['priorpolarity']=='negative'])
-	print 'Score for fname:', get_score(p_words_fd,n_words_fd)
+	print 'Score for '+fname+':', get_score(p_words_fd,n_words_fd)
 	save_plot(p_words_fd,n_words_fd,cname)
 
 
 
-# analyse('Mumbai')
-analyse('NewYork')
+analyse('Bombay')
+# analyse('NewYork')
