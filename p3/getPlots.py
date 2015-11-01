@@ -18,6 +18,16 @@ def kvpairs2table(kvfile):
 				continue
 	return table
 
+def getTopQuantileIdx(fq,q):
+	cs=([w[1] for w in fq.items()])
+	cumsum=q*sum(cs)
+	# print cumsum
+	for i in range(len(cs)):
+		cumsum=cumsum-cs[i]
+		if(cumsum<0):
+			break
+	return i
+
 
 rs=csv2table('reviews.csv')
 
@@ -35,19 +45,29 @@ f2=nltk.FreqDist(jjs)
 f2.plot()
 f2.tabulate()
 
-ws= {}
+ws={}
 for item in kvpairs2table('words.tff'):
    word1 = item.pop('word1')
    ws[word1] = item
 
-d_words=[ {'word':w, 'count':c} for (w,c) in f2.items()[0:15] ]
+f2_half=f2.items()[0:getTopQuantileIdx(f2,0.5)]
 
-p_words=[w for w in d_words if (w['word'] in ws.keys()) and ws[w['word']]['priorpolarity']=='positive']
-n_words=[w for w in d_words if (w['word'] in ws.keys()) and ws[w['word']]['priorpolarity']=='negative']
+p_words_fd=([w for w in f2_half if (w[0] in ws.keys()) and ws[w[0]]['priorpolarity']=='positive'])
+n_words_fd=([w for w in f2_half if (w[0] in ws.keys()) and ws[w[0]]['priorpolarity']=='negative'])
 
-sum([w['count'] for w in p_words])
-([w['word'] for w in p_words])
-sum([w['count'] for w in n_words])
-([w['word'] for w in n_words])
 
+import matplotlib.pyplot as plt
+
+plt.bar(numpy.arange(len(p_words_fd)), [w[1] for w in p_words_fd], 1, color='g',alpha=0.25)
+plt.bar(numpy.arange(len(n_words_fd)), [w[1] for w in n_words_fd], 1, color='r',alpha=0.25)
+
+[plt.text(i,p_words_fd[i][1],p_words_fd[i][0]) for i in range(len(p_words_fd))]
+[plt.text(i,n_words_fd[i][1],n_words_fd[i][0]) for i in range(len(n_words_fd))]
+
+plt.show()
+
+
+p=sum([w[1] for w in p_words_fd])
+n=sum([w[1] for w in n_words_fd])
+score=(p-n)/float(p+n)
 
